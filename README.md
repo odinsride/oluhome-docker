@@ -22,7 +22,13 @@ This repository contains the docker-compose and backup configurations to run olu
 3. Start containers / Stop containers (to generate config folders)
 4. Configure SWAG dns verification service (Cloudflare API key)
 5. Configure SWAG proxy services (examples provided)
-6. Symlink systemd services/timers
+6. Symlink systemd services/timers:
+
+```
+$ sudo ln -s ~/docker/systemd/vaultwarden-backup.service /etc/systemd/system/vaultwarden-backup.service
+$ sudo ln -s ~/docker/systemd/vaultwarden-backup.timer /etc/systemd/system/vaultwarden-backup.timer
+```
+
 7. For Vaultwarden, set `ENABLE_SIGNUPS=true` in `docker-compose.yml` in order to create initial user
 8. Start containers with `docker-compose up -d`
 9. (optional) After creating a user for vaultwarden, bring containers down and set `ENABLE_SIGNUPS=false`

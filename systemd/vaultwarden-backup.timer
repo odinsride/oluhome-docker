@@ -1,0 +1,9 @@
+[Unit]
+Description=Schedule vaultwarden backups
+
+[Timer]
+OnCalendar=04:00
+Persistent=true
+
+[Install]
+WantedBy=multi-user.target
