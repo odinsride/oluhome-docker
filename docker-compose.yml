@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${APPDATA_BASE}/watchtower/config.json:/config.json
+    restart: unless-stopped
+
+  swag:
+    image: ghcr.io/linuxserver/swag
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - URL=${SWAG_URL}
+      - SUBDOMAINS=wildcard
+      - VALIDATION=dns
+      - DNSPLUGIN=${SWAG_DNS_PLUGIN}
+    volumes:
+      - ${APPDATA_BASE}/swag:/config
+    ports:
+      - 443:443
+      - 80:80 #optional
+    restart: unless-stopped
+
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - SIGNUPS_ALLOWED=false
+      - DOMAIN=${VW_DOMAIN}
+      - ADMIN_TOKEN=${VW_ADMIN_TOKEN}
+    volumes:
+      - ${APPDATA_BASE}/vaultwarden:/data   
+    ports:
+      - 3141:80
+      - 3012:3012
+    restart: unless-stopped
+
+  syncthing:
+    image: lscr.io/linuxserver/syncthing
+    container_name: syncthing
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${APPDATA_BASE}/syncthing:/config
+      - ${ST_SYNC_PATH}:/config/default
+    ports:
+      - 8384:8384
+      - 22000:22000/tcp
+      - 22000:22000/udp
+      - 21027:21027/udp
+    restart: unless-stopped
