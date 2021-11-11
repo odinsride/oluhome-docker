@@ -5,6 +5,7 @@ WORKING_DIR="/home/sitheris/docker"
 
 error_exit()
 {
+  curl -m 10 --retry 5 ${HCIO_APPDATA_BACKUP_FAIL_URL}
   echo "${PROGNAME}: ${1:-"Unknown Error"}" 1>&2
   exit 1
 }
@@ -31,3 +32,7 @@ docker-compose -f ${SYSTEM_BASE}/docker-compose.yml up -d || error_exit "Error s
 find ${BACKUP_BASE}/appdata/ -type f -mtime +30 -name 'appdata*' -delete || error_exit "Error removing old backups."
 
 echo "${PROGNAME}: Backup complete."
+
+# If we got this far, send a healthchecks ping
+echo "${PROGNAME}: Pinging healthchecks.io..."
+curl -m 10 --retry 5 ${HCIO_APPDATA_BACKUP_URL}
