@@ -16,7 +16,7 @@ set +a
 
 # Shutdown Docker Containers
 echo "${PROGNAME}: Stopping containers..."
-docker-compose -f ${WORKING_DIR}/docker-compose.yml down || error_exit "Error stopping containers."
+docker-compose -f ${SYSTEM_BASE}/docker-compose.yml down || error_exit "Error stopping containers."
 
 # Tar up the appdata directory
 ARCHIVE_NAME=appdata-$(date -Is | tr : _).tar.gz
@@ -25,7 +25,7 @@ tar -czvf ${BACKUP_BASE}/appdata/${ARCHIVE_NAME} ${APPDATA_BASE}/ || error_exit 
 
 # Restart Docker Containers
 echo "${PROGNAME}: Starting containers..."
-docker-compose -f ${WORKING_DIR}/docker-compose.yml up -d || error_exit "Error starting containers."
+docker-compose -f ${SYSTEM_BASE}/docker-compose.yml up -d || error_exit "Error starting containers."
 
 # Remove old backups
 find ${BACKUP_BASE}/appdata/ -type f -mtime +30 -name 'appdata*' -delete || error_exit "Error removing old backups."
