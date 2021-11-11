@@ -1,0 +1,7 @@
+[Unit]
+Description=Sync Backups to B2
+
+[Service]
+Type=oneshot
+
+ExecStart=/usr/bin/env sh -c '/home/sitheris/docker/bin/b2_sync.sh'

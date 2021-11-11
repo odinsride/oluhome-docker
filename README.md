@@ -30,6 +30,8 @@ sudo ln -s ~/docker/systemd/vaultwarden-backup.service /etc/systemd/system/vault
 sudo ln -s ~/docker/systemd/vaultwarden-backup.timer /etc/systemd/system/vaultwarden-backup.timer
 sudo ln -s ~/docker/systemd/appdata-backup.service /etc/systemd/system/appdata-backup.service
 sudo ln -s ~/docker/systemd/appdata-backup.timer /etc/systemd/system/appdata-backup.timer
+sudo ln -s ~/docker/systemd/b2-sync.service /etc/systemd/system/b2-sync.service
+sudo ln -s ~/docker/systemd/b2-sync.timer /etc/systemd/system/b2-sync.timer
 ```
 
 7. For Vaultwarden, set `ENABLE_SIGNUPS=true` in `docker-compose.yml` in order to create initial user
