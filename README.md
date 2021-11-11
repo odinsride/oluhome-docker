@@ -14,6 +14,7 @@ This repository contains the docker-compose and backup configurations to run olu
 * Docker
 * Docker Compose
 * sqlite3 (cli used for backing up vaultwarden)
+* [Backblaze B2 CLI Tool](https://www.backblaze.com/b2/docs/quick_command_line.html)
 
 ## Setup
 
@@ -25,8 +26,10 @@ This repository contains the docker-compose and backup configurations to run olu
 6. Symlink systemd services/timers:
 
 ```
-$ sudo ln -s ~/docker/systemd/vaultwarden-backup.service /etc/systemd/system/vaultwarden-backup.service
-$ sudo ln -s ~/docker/systemd/vaultwarden-backup.timer /etc/systemd/system/vaultwarden-backup.timer
+sudo ln -s ~/docker/systemd/vaultwarden-backup.service /etc/systemd/system/vaultwarden-backup.service
+sudo ln -s ~/docker/systemd/vaultwarden-backup.timer /etc/systemd/system/vaultwarden-backup.timer
+sudo ln -s ~/docker/systemd/appdata-backup.service /etc/systemd/system/appdata-backup.service
+sudo ln -s ~/docker/systemd/appdata-backup.timer /etc/systemd/system/appdata-backup.timer
 ```
 
 7. For Vaultwarden, set `ENABLE_SIGNUPS=true` in `docker-compose.yml` in order to create initial user

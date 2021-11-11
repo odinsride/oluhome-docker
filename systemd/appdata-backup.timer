@@ -1,0 +1,9 @@
+[Unit]
+Description=Schedule appdata backups
+
+[Timer]
+OnCalendar=04:10
+Persistent=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,6 @@
+[Unit]
+Description=Backup oluhome container appdata
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/env sh -c '/home/sitheris/docker/bin/appdata_backup.sh'
