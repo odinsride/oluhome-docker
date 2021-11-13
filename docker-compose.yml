@@ -62,3 +62,20 @@ services:
       - 22000:22000/udp
       - 21027:21027/udp
     restart: unless-stopped
+
+  gitea-db:
+    image: lscr.io/linuxserver/mariadb
+    container_name: gitea-db
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - MYSQL_ROOT_PASSWORD=${GITEA_MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${GITEA_MYSQL_USER}
+      - MYSQL_PASSWORD=${GITEA_MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${GITEA_MYSQL_DATABASE}
+    volumes:
+      - ${APPDATA_BASE}/mariadb:/config
+    ports:
+      - 3306:3306
+    restart: unless-stopped

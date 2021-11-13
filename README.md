@@ -14,6 +14,7 @@ This repository contains the docker-compose and backup configurations to run olu
 * Docker
 * Docker Compose
 * sqlite3 (cli used for backing up vaultwarden)
+* curl
 * [Backblaze B2 CLI Tool](https://www.backblaze.com/b2/docs/quick_command_line.html)
 
 ## Setup
