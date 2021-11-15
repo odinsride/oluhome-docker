@@ -27,14 +27,17 @@ This repository contains the docker-compose and backup configurations to run olu
 6. Symlink systemd services/timers:
 
 ```
-sudo ln -s ~/docker/systemd/vaultwarden-backup.service /etc/systemd/system/vaultwarden-backup.service
-sudo ln -s ~/docker/systemd/vaultwarden-backup.timer /etc/systemd/system/vaultwarden-backup.timer
-sudo ln -s ~/docker/systemd/appdata-backup.service /etc/systemd/system/appdata-backup.service
-sudo ln -s ~/docker/systemd/appdata-backup.timer /etc/systemd/system/appdata-backup.timer
-sudo ln -s ~/docker/systemd/b2-sync.service /etc/systemd/system/b2-sync.service
-sudo ln -s ~/docker/systemd/b2-sync.timer /etc/systemd/system/b2-sync.timer
+sudo ln -s ~/docker/systemd/oluhome-backup.service /etc/systemd/system/oluhome-backup.service
+sudo ln -s ~/docker/systemd/oluhome-backup.timer /etc/systemd/system/oluhome-backup.timer
 ```
 
-7. For Vaultwarden, set `ENABLE_SIGNUPS=true` in `docker-compose.yml` in order to create initial user
-8. Start containers with `docker-compose up -d`
-9. (optional) After creating a user for vaultwarden, bring containers down and set `ENABLE_SIGNUPS=false`
+7. Enable and start the oluhome-backup systemd timer:
+
+```
+sudo systemctl enable oluhome-backup.timer
+sudo systemctl start oluhome-backup.timer
+```
+
+8. For Vaultwarden, set `ENABLE_SIGNUPS=true` in `docker-compose.yml` in order to create initial user
+9. Start containers with `docker-compose up -d`
+10. (optional) After creating a user for vaultwarden, bring containers down and set `ENABLE_SIGNUPS=false`

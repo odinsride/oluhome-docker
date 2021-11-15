@@ -1,0 +1,74 @@
+#!/bin/bash
+#
+# oluhome backup:
+# - sources files from ../lib
+# - backs up the docker appdata folder, .env file
+# - syncs the backup and syncthing folders to B2
+# - performs healthchecks.io pings to report backup status
+
+SHLIB="../lib"
+
+. ${SHLIB}/logger.sh       # log
+. ${SHLIB}/errors.sh       # error_exit, error_return
+. ${SHLIB}/environment.sh  # envup
+. ${SHLIB}/containers.sh   # down_containers, up_containers
+. ${SHLIB}/archive.sh      # create_archive, prune_archive
+. ${SHLIB}/healthchecks.sh # hc_ping, hc_ping_Fail
+. ${SHLIB}/b2-sync.sh      # b2sync, b2auth
+
+# Appdata backup:
+# - Creates tar archive of docker appdata folder
+# - status checks to ensure containers brought back up in case of archive failure
+function appdata_backup() {
+  down_containers
+  create_archive "appdata" ${APPDATA_BASE}
+  status="${?}"
+  up_containers
+
+  if [ "${status}" -ne "0" ]; then
+    hc_ping_fail "Appdata Backup" ${HCIO_APPDATA_BACKUP_URL}
+    error_exit "Error occurred in appdata backup"
+  else
+    hc_ping "Appdata Backup" ${HCIO_APPDATA_BACKUP_URL}
+  fi
+}
+
+# Env backup
+# - Create a copy of the .env file to the backups folder
+function env_backup() {
+  log "INFO" "Backing up .env file..."
+  env_file=.env.$(date -Is | tr : _)
+  cp ${SYSTEM_BASE}/.env ${BACKUP_BASE}/env/${env_file}
+  find ${BACKUP_BASE}/env/ -type f -mtime +30 -name ".env*" -delete || error_exit "Error removing old env files."
+  log "INFO" "Done."
+}
+
+# B2 sync - sync backups directory as well as syncthing
+function backblaze_sync() {
+  b2sync ${BACKUP_BASE} "backups"
+  b2status="${?}"
+
+  if [ "${b2status}" -ne "0" ]; then
+    hc_ping_fail "B2 Sync" ${HCIO_B2_SYNC_URL}
+    error_exit "B2 Sync of backups failed."
+  fi
+
+  b2sync ${ST_SYNC_PATH} "syncthing"
+  b2status="${?}"
+
+  if [ "${b2status}" -ne "0" ]; then
+    hc_ping_fail "B2 Sync" ${HCIO_B2_SYNC_URL}
+    error_exit "B2 Sync of syncthing failed."
+  fi
+
+  hc_ping "B2 Sync" ${HCIO_B2_SYNC_URL}
+}
+
+function main() {
+  envup
+  appdata_backup
+  env_backup
+  backblaze_sync
+}
+
+main

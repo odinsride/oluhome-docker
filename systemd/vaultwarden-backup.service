@@ -1,8 +1,0 @@
-[Unit]
-Description=Backup the vaultwarden sqlite database
-
-[Service]
-Type=oneshot
-WorkingDirectory=/home/sitheris/backups/vaultwarden
-ExecStart=/usr/bin/env sh -c 'sqlite3 /home/sitheris/docker/appdata/vaultwarden/db.sqlite3 ".backup backup-$(date -Is | tr : _).sq3"'
-ExecStart=/usr/bin/find . -type f -mtime +30 -name 'backup*' -delete
