@@ -15,6 +15,7 @@ SHLIB="../lib"
 . ${SHLIB}/archive.sh      # create_archive, prune_archive
 . ${SHLIB}/healthchecks.sh # hc_ping, hc_ping_Fail
 . ${SHLIB}/b2-sync.sh      # b2sync, b2auth
+. ${SHLIB}/gitea.sh        # gitea_dump
 
 # Appdata backup:
 # - Creates tar archive of docker appdata folder
@@ -66,8 +67,9 @@ function backblaze_sync() {
 
 function main() {
   envup
-  appdata_backup
   env_backup
+  gitea_dump
+  appdata_backup
   backblaze_sync
 }
 

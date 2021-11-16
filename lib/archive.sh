@@ -7,7 +7,7 @@ function create_archive() {
   archive_source_path="${2}"
   archive_name="${archive_prefix}-$(date -Is | tr : _).tar.gz"
   log "INFO" "Creating archive - ${archive_name}..."
-  tar -czf ${BACKUP_BASE}/${archive_prefix}/${archive_name} ${archive_source_path}/ || error_return "Error creating archive."
+  tar --exclude="${archive_source_path}/gitea" -czf ${BACKUP_BASE}/${archive_prefix}/${archive_name} ${archive_source_path}/ || error_return "Error creating archive."
   log "INFO" "Archive created."
   prune_archive ${archive_prefix}
 }
