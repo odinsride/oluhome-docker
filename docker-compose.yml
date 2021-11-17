@@ -103,3 +103,42 @@ services:
     depends_on:
       - gitea-db
     restart: unless-stopped
+
+  drone:
+    image: drone/drone:latest
+    container_name: drone
+    environment:
+      - DRONE_GITEA_SERVER=${DRONE_GITEA_SERVER}
+      - DRONE_GIT_ALWAYS_AUTH=${DRONE_GIT_ALWAYS_AUTH}
+      - DRONE_GITEA_CLIENT_ID=${DRONE_GITEA_CLIENT_ID}
+      - DRONE_GITEA_CLIENT_SECRET=${DRONE_GITEA_CLIENT_SECRET}
+      - DRONE_SERVER_HOST=${DRONE_SERVER_HOST}
+      - DRONE_SERVER_PROTO=${DRONE_SERVER_PROTO}
+      - DRONE_RPC_SECRET=${DRONE_RPC_SECRET}
+      - DRONE_USER_CREATE=${DRONE_USER_CREATE}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${APPDATA_BASE}/drone:/data
+    restart: unless-stopped
+
+  drone-runner:
+    image: drone/drone-runner-docker:1
+    container_name: drone-runner
+    environment:
+      - DRONE_RPC_PROTO=${DRONE_RPC_PROTO}
+      - DRONE_RPC_HOST=${DRONE_RPC_HOST}
+      - DRONE_RPC_SECRET=${DRONE_RPC_SECRET}
+      - DRONE_RUNNER_CAPACITY=${DRONE_RUNNER_CAPACITY}
+      - DRONE_RUNNER_NAME=${DRONE_RUNNER_NAME}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+  notes-test:
+    image: nginx
+    container_name: notes-test
+    volumes:
+      - ${APPDATA_BASE}/notes-test/site:/usr/share/nginx/html:ro
+    ports:
+      - "3142:80"
+    restart: unless-stopped
