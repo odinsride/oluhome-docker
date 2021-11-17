@@ -41,6 +41,11 @@ sudo systemctl start oluhome-backup.timer
 8. For Vaultwarden, set `ENABLE_SIGNUPS=true` in `docker-compose.yml` in order to create initial user
 9. Start containers with `docker-compose up -d`
 10. (optional) After creating a user for vaultwarden, bring containers down and set `ENABLE_SIGNUPS=false`
-11. Gitea SSH passthrough configuration (see the following guides):
-  * [SSH Container Passthrough](https://docs.gitea.io/en-us/install-with-docker/#ssh-container-passthrough) - Official Gitea Docs
-  * [Gitea in Docker Container and Sharing SSH with Host](https://blog.sakuragawa.moe/gitea-in-docker-container-and-sharing-ssh-with-host/) - Sakuragawa Asaba
+11. Gitea Setup:
+  * Create a `git` user on the host and generate SSH Keys
+  * SSH passthrough configuration (see the following guides):
+    - [SSH Container Passthrough](https://docs.gitea.io/en-us/install-with-docker/#ssh-container-passthrough) - Official Gitea Docs
+    - [Gitea in Docker Container and Sharing SSH with Host](https://blog.sakuragawa.moe/gitea-in-docker-container-and-sharing-ssh-with-host/) - Sakuragawa Asaba
+  * Create an admin user from the Gitea setup page
+12. Drone CI Setup:
+  * Navigate to (https://drone.example.com) and login, test syncing repos to ensure it connects to Gitea.
