@@ -8,6 +8,9 @@ This repository contains the docker-compose and backup configurations to run olu
 * Vaultwarden (Password Manager)
 * Syncthing (File Syncing Service)
 * Watchtower (Docker container base image update automation)
+* Gitea (Git repository hosting)
+* Drone CI (CI/CD Automation)
+* Nginx (Target for Docs build)
 
 ## Dependencies
 
