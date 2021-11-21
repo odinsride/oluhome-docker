@@ -134,11 +134,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
 
-  notes-test:
+  oluhome-docs:
     image: nginx
-    container_name: notes-test
+    container_name: oluhome-docs
     volumes:
-      - ${APPDATA_BASE}/notes-test/site:/usr/share/nginx/html:ro
+      - ${APPDATA_BASE}/oluhome-docs/site:/usr/share/nginx/html:ro
     ports:
-      - "3142:80"
+      - "3143:80"
     restart: unless-stopped
