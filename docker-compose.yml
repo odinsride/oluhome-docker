@@ -155,3 +155,13 @@ services:
     ports:
       - "3001:3001"
     restart: unless-stopped
+
+  flame:
+    image: pawelmalak/flame:latest
+    container_name: flame
+    volumes:
+      - ${APPDATA_BASE}/flame:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "5005:5005"
+    restart: unless-stopped
