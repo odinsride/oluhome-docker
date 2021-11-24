@@ -142,3 +142,16 @@ services:
     ports:
       - "3143:80"
     restart: unless-stopped
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${APPDATA_BASE}/uptime-kuma:/app/data
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
