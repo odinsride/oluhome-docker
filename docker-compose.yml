@@ -6,7 +6,6 @@ services:
     container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${APPDATA_BASE}/watchtower/config.json:/config.json
     restart: unless-stopped
 
   swag:
