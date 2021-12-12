@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.7"
 
 services:
   watchtower:
@@ -156,7 +156,7 @@ services:
     restart: unless-stopped
 
   flame:
-    image: pawelmalak/flame:latest
+    image: pawelmalak/flame:2.1.0
     container_name: flame
     volumes:
       - ${APPDATA_BASE}/flame:/app/data
