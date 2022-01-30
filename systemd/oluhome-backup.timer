@@ -6,4 +6,4 @@ OnCalendar=04:00
 Persistent=true
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=timers.target

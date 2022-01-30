@@ -1,12 +1,23 @@
 version: "3.7"
 
 services:
-  watchtower:
-    image: containrrr/watchtower
-    container_name: watchtower
+  diun:
+    image: crazymax/diun:latest
+    container_name: diun
+    hostname: diun-oluhome-02
+    command: serve
+    environment:
+      - TZ=${TZ}
+      - LOG_LEVEL=info
+      - LOG_JSON=false
     volumes:
+      - ${APPDATA_BASE}/diun:/data
+      - ${APPDATA_BASE}/diun/diun.yml:/diun.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
+    labels:
+      - "diun.enable=true"
+      - "diun.watch_repo=true"
+    restart: always
 
   swag:
     image: ghcr.io/linuxserver/swag
@@ -26,6 +37,8 @@ services:
     ports:
       - 443:443
       - 80:80 #optional
+    labels:
+      - "diun.enable=true"
     restart: unless-stopped
 
   vaultwarden:
@@ -43,6 +56,8 @@ services:
     ports:
       - 3141:80
       - 3012:3012
+    labels:
+      - "diun.enable=true"
     restart: unless-stopped
 
   syncthing:
@@ -60,6 +75,8 @@ services:
       - 22000:22000/tcp
       - 22000:22000/udp
       - 21027:21027/udp
+    labels:
+      - "diun.enable=true"
     restart: unless-stopped
 
   gitea-db:
@@ -77,6 +94,8 @@ services:
       - ${APPDATA_BASE}/gitea-db:/config
     ports:
       - 3306:3306
+    labels:
+      - "diun.enable=true"
     restart: unless-stopped
   
   gitea:
@@ -101,6 +120,8 @@ services:
       - "127.0.0.1:2222:22"
     depends_on:
       - gitea-db
+    labels:
+      - "diun.enable=true"
     restart: unless-stopped
 
   drone:
@@ -118,6 +139,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${APPDATA_BASE}/drone:/data
+    labels:
+      - "diun.enable=true"
     restart: unless-stopped
 
   drone-runner:
@@ -131,6 +154,8 @@ services:
       - DRONE_RUNNER_NAME=${DRONE_RUNNER_NAME}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "diun.enable=true"
     restart: unless-stopped
 
   oluhome-docs:
@@ -140,6 +165,8 @@ services:
       - ${APPDATA_BASE}/oluhome-docs/site:/usr/share/nginx/html:ro
     ports:
       - "3143:80"
+    labels:
+      - "diun.enable=true"
     restart: unless-stopped
 
   uptime-kuma:
@@ -153,6 +180,8 @@ services:
       - ${APPDATA_BASE}/uptime-kuma:/app/data
     ports:
       - "3001:3001"
+    labels:
+      - "diun.enable=true"
     restart: unless-stopped
 
   flame:
@@ -163,4 +192,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "5005:5005"
+    labels:
+      - "diun.enable=true"
     restart: unless-stopped
