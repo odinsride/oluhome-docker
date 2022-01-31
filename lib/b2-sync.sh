@@ -9,7 +9,7 @@ function b2sync() {
   b2auth
 
   log "INFO" "Syncing ${source_path} to B2..."
-  ${SYSTEM_BASE}/lib/vendor/b2 sync ${source_path} b2://${B2_BUCKET}/${dest_folder} || error_return "Error syncing to B2."
+  ${SYSTEM_BASE}/lib/vendor/b2 sync --delete ${source_path} b2://${B2_BUCKET}/${dest_folder} || error_return "Error syncing to B2."
   log "INFO" "Done"
 }
 
